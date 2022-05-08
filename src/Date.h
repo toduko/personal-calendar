@@ -17,6 +17,8 @@ public:
   Date(const String &date);
   Date(u16 year, u8 month, u8 day);
 
+  String toString() const;
+
   static Date fromString(const String &date);
   static bool isLeapYear(u16 year);
   static u8 getDaysInMonth(u8 month, u16 year);

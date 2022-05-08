@@ -83,9 +83,32 @@ bool Date::isValidDate(const Date &date)
 
 bool Date::isValidDate(u16 year, u8 month, u8 day)
 {
-  if (month < 1 || month > 12)
+  if (month < 1 || month > 12 || year < 1970 || year > 2200)
   {
     return false;
   }
   return day <= Date::getDaysInMonth(month, year);
+}
+
+String Date::toString() const
+{
+  if (!Date::isValidDate(*this))
+  {
+    throw "Cannot convert invalid date to string";
+  }
+
+  String result("YYYY-MM-DD");
+
+  result[0] = String::toChar(this->year / 1000);
+  result[1] = String::toChar((this->year / 100) % 10);
+  result[2] = String::toChar((this->year / 10) % 10);
+  result[3] = String::toChar(this->year % 10);
+
+  result[5] = String::toChar(this->month / 10);
+  result[6] = String::toChar(this->month % 10);
+
+  result[8] = String::toChar(this->day / 10);
+  result[9] = String::toChar(this->day % 10);
+
+  return result;
 }
