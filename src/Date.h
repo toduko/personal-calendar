@@ -32,4 +32,11 @@ public:
   static bool isValidDateStringFormat(const String &date);
 };
 
+bool operator==(const Date &date1, const Date &date2);
+bool operator!=(const Date &date1, const Date &date2);
+bool operator<(const Date &date1, const Date &date2);
+bool operator>(const Date &date1, const Date &date2);
+bool operator<=(const Date &date1, const Date &date2);
+bool operator>=(const Date &date1, const Date &date2);
+
 #endif

@@ -125,3 +125,35 @@ u8 Date::getDay() const
 {
   return this->day;
 }
+
+bool operator==(const Date &date1, const Date &date2)
+{
+  return date1.getDay() == date2.getDay() && date1.getMonth() == date2.getMonth() && date1.getYear() == date2.getYear();
+}
+
+bool operator!=(const Date &date1, const Date &date2)
+{
+  return !(date1 == date2);
+}
+
+bool operator<(const Date &date1, const Date &date2)
+{
+  return ((date1.getYear() < date2.getYear()) ||
+          (date1.getYear() == date2.getYear() && date1.getMonth() < date2.getMonth()) ||
+          (date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth() && date1.getDay() < date2.getDay()));
+}
+
+bool operator>=(const Date &date1, const Date &date2)
+{
+  return !(date1 < date2);
+}
+
+bool operator>(const Date &date1, const Date &date2)
+{
+  return date1 >= date2 && date1 != date2;
+}
+
+bool operator<=(const Date &date1, const Date &date2)
+{
+  return !(date1 > date2);
+}
