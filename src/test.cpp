@@ -23,31 +23,31 @@ void test_string(void)
   TEST_CHECK(strcmp(s1.getData(), ALPHABET) == 0);
 }
 
-void test_date_validation(void)
+void test_date(void)
 {
-  TEST_CHECK(DateValidator::getDaysInMonth(1, 0) == 31);
-  TEST_CHECK(DateValidator::getDaysInMonth(3, 0) == 31);
-  TEST_CHECK(DateValidator::getDaysInMonth(4, 0) == 30);
-  TEST_CHECK(DateValidator::getDaysInMonth(5, 0) == 31);
-  TEST_CHECK(DateValidator::getDaysInMonth(6, 0) == 30);
-  TEST_CHECK(DateValidator::getDaysInMonth(7, 0) == 31);
-  TEST_CHECK(DateValidator::getDaysInMonth(8, 0) == 31);
-  TEST_CHECK(DateValidator::getDaysInMonth(9, 0) == 30);
-  TEST_CHECK(DateValidator::getDaysInMonth(10, 0) == 31);
-  TEST_CHECK(DateValidator::getDaysInMonth(11, 0) == 30);
-  TEST_CHECK(DateValidator::getDaysInMonth(12, 0) == 31);
+  TEST_CHECK(Date::getDaysInMonth(1, 0) == 31);
+  TEST_CHECK(Date::getDaysInMonth(3, 0) == 31);
+  TEST_CHECK(Date::getDaysInMonth(4, 0) == 30);
+  TEST_CHECK(Date::getDaysInMonth(5, 0) == 31);
+  TEST_CHECK(Date::getDaysInMonth(6, 0) == 30);
+  TEST_CHECK(Date::getDaysInMonth(7, 0) == 31);
+  TEST_CHECK(Date::getDaysInMonth(8, 0) == 31);
+  TEST_CHECK(Date::getDaysInMonth(9, 0) == 30);
+  TEST_CHECK(Date::getDaysInMonth(10, 0) == 31);
+  TEST_CHECK(Date::getDaysInMonth(11, 0) == 30);
+  TEST_CHECK(Date::getDaysInMonth(12, 0) == 31);
 
-  TEST_CHECK(DateValidator::getDaysInMonth(2, 4) == 29);
-  TEST_CHECK(DateValidator::getDaysInMonth(2, 100) == 28);
-  TEST_CHECK(DateValidator::getDaysInMonth(2, 400) == 29);
+  TEST_CHECK(Date::getDaysInMonth(2, 4) == 29);
+  TEST_CHECK(Date::getDaysInMonth(2, 100) == 28);
+  TEST_CHECK(Date::getDaysInMonth(2, 400) == 29);
 
   for (unsigned i = 1; i < 10000; i += 2)
   {
-    TEST_CHECK(DateValidator::getDaysInMonth(2, i) == 28);
+    TEST_CHECK(Date::getDaysInMonth(2, i) == 28);
   }
 }
 
 TEST_LIST = {
     {"String", test_string},
-    {"DateValidator", test_date_validation},
+    {"Date", test_date},
     {NULL, NULL}};
