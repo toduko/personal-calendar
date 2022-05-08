@@ -149,3 +149,21 @@ char String::toChar(unsigned digit)
   }
   return '0' + digit;
 }
+
+std::istream &operator>>(std::istream &is, String &string)
+{
+  const size_t MAX_INPUT_LENGTH = 1024;
+  char input[MAX_INPUT_LENGTH + 1];
+
+  is.getline(input, MAX_INPUT_LENGTH);
+  string = input;
+
+  return is;
+}
+
+std::ostream &operator<<(std::ostream &os, String &string)
+{
+  os << string.getData();
+
+  return os;
+}

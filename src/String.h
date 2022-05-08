@@ -2,6 +2,7 @@
 #define STRING_H_
 
 #include <cstddef>
+#include <iostream>
 
 class String
 {
@@ -39,5 +40,8 @@ public:
 String operator+(const String &string1, const String &string2);
 bool operator==(const String &string1, const String &string2);
 bool operator!=(const String &string1, const String &string2);
+
+std::istream &operator>>(std::istream &is, String &string);
+std::ostream &operator<<(std::ostream &os, String &string);
 
 #endif
