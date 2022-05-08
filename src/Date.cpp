@@ -1,5 +1,68 @@
 #include "Date.h"
 
+Date::Date(const String &date)
+{
+  *this = Date::fromString(date);
+}
+
+bool Date::isValidDateStringFormat(const String &date) // YYYY-MM-DD expected
+{
+  if (date.getLength() != 10)
+  {
+    return false;
+  }
+
+  for (size_t i = 0; i < date.getLength(); ++i)
+  {
+    if (((i == 4 || i == 7) && date[i] != '-') || ((i != 4 && i != 7) && !String::isDigit(date[i])))
+    {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+Date Date::fromString(const String &date)
+{
+  if (!Date::isValidDateStringFormat(date))
+  {
+    throw "Invalid date string format";
+  }
+
+  u16 year = 0;
+  u8 month = 0, day = 0;
+
+  for (size_t i = 0; i <= 3; ++i)
+  {
+    (year *= 10) += String::toDigit(date[i]);
+  }
+
+  for (size_t i = 5; i <= 6; ++i)
+  {
+    (month *= 10) += String::toDigit(date[i]);
+  }
+
+  for (size_t i = 8; i <= 9; ++i)
+  {
+    (day *= 10) += String::toDigit(date[i]);
+  }
+
+  return Date(year, month, day);
+}
+
+bool Date::isValidDateString(const String &date)
+{
+  try
+  {
+    return Date::isValidDate(Date::fromString(date));
+  }
+  catch (const char *errorMessage)
+  {
+    return false;
+  }
+}
+
 Date::Date(u16 year, u8 month, u8 day) : year(year), month(month), day(day) {}
 
 bool Date::isLeapYear(u16 year)
@@ -11,6 +74,11 @@ u8 Date::getDaysInMonth(u8 month, u16 year)
 {
   const long long int DAYS_IN_MONTHS = 1151794505154789279;
   return ((DAYS_IN_MONTHS >> (5 * (month - 1)) & 31) + (month == 2 && Date::isLeapYear(year)));
+}
+
+bool Date::isValidDate(const Date &date)
+{
+  return Date::isValidDate(date.year, date.month, date.day);
 }
 
 bool Date::isValidDate(u16 year, u8 month, u8 day)

@@ -39,6 +39,24 @@ String &String::operator=(String &&other)
   return *this;
 }
 
+char &String::operator[](size_t index)
+{
+  if (index >= this->length)
+  {
+    throw "Invalid index";
+  }
+  return this->data[index];
+}
+
+char String::operator[](size_t index) const
+{
+  if (index >= this->length)
+  {
+    throw "Invalid index";
+  }
+  return this->data[index];
+}
+
 String::~String()
 {
   this->free();
@@ -108,4 +126,26 @@ bool operator==(const String &string1, const String &string2)
 bool operator!=(const String &string1, const String &string2)
 {
   return !(string1 == string2);
+}
+
+bool String::isDigit(char c)
+{
+  return c >= '0' && c <= '9';
+}
+
+unsigned String::toDigit(char c)
+{
+  if (!String::isDigit(c))
+  {
+    throw "Character is not a digit";
+  }
+  return c - '0';
+}
+char String::toChar(unsigned digit)
+{
+  if (digit >= 10)
+  {
+    throw "Number is not a digit";
+  }
+  return '0' + digit;
 }

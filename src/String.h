@@ -21,12 +21,19 @@ public:
   String &operator=(String &&other);
   ~String();
 
+  char &operator[](size_t index);
+  char operator[](size_t index) const;
+
   String &concat(const char *extra);
 
   const char *getData() const;
   size_t getLength() const;
 
   String &operator+=(const String &other);
+
+  static bool isDigit(char c);
+  static unsigned toDigit(char c);
+  static char toChar(unsigned digit);
 };
 
 String operator+(const String &string1, const String &string2);
