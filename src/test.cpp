@@ -45,6 +45,10 @@ void test_date(void)
   {
     TEST_CHECK(Date::getDaysInMonth(2, i) == 28);
   }
+
+  Date d("2002-11-16");
+  TEST_CHECK(d.getYear() == 2002 && d.getMonth() == 11 && d.getDay() == 16);
+  TEST_CHECK(d.toString() == "2002-11-16");
 }
 
 TEST_LIST = {

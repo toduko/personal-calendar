@@ -112,3 +112,16 @@ String Date::toString() const
 
   return result;
 }
+
+u16 Date::getYear() const
+{
+  return this->year;
+}
+u8 Date::getMonth() const
+{
+  return this->month;
+}
+u8 Date::getDay() const
+{
+  return this->day;
+}

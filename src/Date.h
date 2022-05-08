@@ -17,6 +17,10 @@ public:
   Date(const String &date);
   Date(u16 year, u8 month, u8 day);
 
+  u16 getYear() const;
+  u8 getMonth() const;
+  u8 getDay() const;
+
   String toString() const;
 
   static Date fromString(const String &date);
