@@ -12,23 +12,20 @@ private:
   u16 year;
   u8 month;
   u8 day;
-
-public:
-  Date(const String &date);
   Date(u16 year, u8 month, u8 day);
 
+public:
   u16 getYear() const;
   u8 getMonth() const;
   u8 getDay() const;
 
   String toString() const;
 
-  static Date fromString(const String &date);
+  static Date create(u16 year, u8 month, u8 day);
+  static Date create(const String &date);
   static bool isLeapYear(u16 year);
   static u8 getDaysInMonth(u8 month, u16 year);
-  static bool isValidDate(const Date &date);
   static bool isValidDate(u16 year, u8 month, u8 day);
-  static bool isValidDateString(const String &date);
   static bool isValidDateStringFormat(const String &date);
 };
 

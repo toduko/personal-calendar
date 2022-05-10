@@ -1,10 +1,5 @@
 #include "Date.h"
 
-Date::Date(const String &date)
-{
-  *this = Date::fromString(date);
-}
-
 bool Date::isValidDateStringFormat(const String &date) // YYYY-MM-DD expected
 {
   if (date.getLength() != 10)
@@ -23,7 +18,17 @@ bool Date::isValidDateStringFormat(const String &date) // YYYY-MM-DD expected
   return true;
 }
 
-Date Date::fromString(const String &date)
+Date Date::create(u16 year, u8 month, u8 day)
+{
+  if (!Date::isValidDate(year, month, day))
+  {
+    throw "Invalid date";
+  }
+
+  return Date(year, month, day);
+}
+
+Date Date::create(const String &date)
 {
   if (!Date::isValidDateStringFormat(date))
   {
@@ -51,18 +56,6 @@ Date Date::fromString(const String &date)
   return Date(year, month, day);
 }
 
-bool Date::isValidDateString(const String &date)
-{
-  try
-  {
-    return Date::isValidDate(Date::fromString(date));
-  }
-  catch (const char *errorMessage)
-  {
-    return false;
-  }
-}
-
 Date::Date(u16 year, u8 month, u8 day) : year(year), month(month), day(day) {}
 
 bool Date::isLeapYear(u16 year)
@@ -76,11 +69,6 @@ u8 Date::getDaysInMonth(u8 month, u16 year)
   return ((DAYS_IN_MONTHS >> (5 * (month - 1)) & 31) + (month == 2 && Date::isLeapYear(year)));
 }
 
-bool Date::isValidDate(const Date &date)
-{
-  return Date::isValidDate(date.year, date.month, date.day);
-}
-
 bool Date::isValidDate(u16 year, u8 month, u8 day)
 {
   if (month < 1 || month > 12 || year < 1970 || year > 2200)
@@ -92,11 +80,6 @@ bool Date::isValidDate(u16 year, u8 month, u8 day)
 
 String Date::toString() const
 {
-  if (!Date::isValidDate(*this))
-  {
-    throw "Cannot convert invalid date to string";
-  }
-
   String result("YYYY-MM-DD");
 
   result[0] = String::toChar(this->year / 1000);
