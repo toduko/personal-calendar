@@ -106,6 +106,11 @@ size_t String::getLength() const
   return this->length;
 }
 
+bool String::isEmpty() const
+{
+  return this->length == 0;
+}
+
 String &String::operator+=(const String &other)
 {
   return this->concat(other.data);

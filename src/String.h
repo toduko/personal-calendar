@@ -22,6 +22,8 @@ public:
   String &operator=(String &&other);
   ~String();
 
+  bool isEmpty() const;
+
   char &operator[](size_t index);
   char operator[](size_t index) const;
 

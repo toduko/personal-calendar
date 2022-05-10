@@ -3,6 +3,7 @@
 #include "String.h"
 #include "Date.h"
 #include "Time.h"
+#include "Meeting.h"
 
 int main()
 {
