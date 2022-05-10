@@ -55,6 +55,8 @@ String Time::toString() const
 
 Time::Time(u8 hours, u8 minutes, u8 seconds) : hours(hours), minutes(minutes), seconds(seconds) {}
 
+Time::Time() : hours(0), minutes(0), seconds(0) {}
+
 bool Time::isValidTime(u8 hours, u8 minutes, u8 seconds)
 {
   return hours < 24 && minutes < 60 && seconds < 60;
@@ -123,4 +125,21 @@ bool operator>(const Time &time1, const Time &time2)
 bool operator<=(const Time &time1, const Time &time2)
 {
   return !(time1 > time2);
+}
+
+std::istream &operator>>(std::istream &is, Time &time)
+{
+  String input;
+  is >> input;
+
+  time = Time::create(input);
+
+  return is;
+}
+
+std::ostream &operator<<(std::ostream &os, const Time &time)
+{
+  os << time.toString();
+
+  return os;
 }

@@ -4,6 +4,8 @@
 #include "String.h"
 #include "typedefs.h"
 
+#include <iostream>
+
 class Time
 {
 private:
@@ -13,6 +15,8 @@ private:
     Time(u8 hours, u8 minutes, u8 seconds);
 
 public:
+    Time();
+    
     u8 getHours() const;
     u8 getMinutes() const;
     u8 getSeconds() const;
@@ -31,5 +35,8 @@ bool operator<(const Time &time1, const Time &time2);
 bool operator>(const Time &time1, const Time &time2);
 bool operator<=(const Time &time1, const Time &time2);
 bool operator>=(const Time &time1, const Time &time2);
+
+std::istream &operator>>(std::istream &is, Time &time);
+std::ostream &operator<<(std::ostream &os, const Time &time);
 
 #endif
