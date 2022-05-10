@@ -69,13 +69,19 @@ public:
     return this->data == nullptr;
   }
 
-  const T &getData() const
+  T &getData() const
   {
     if (this->isNull())
     {
       throw "No data";
     }
+
     return *this->data;
+  }
+
+  operator T() const
+  {
+    return this->getData();
   }
 };
 

@@ -3,6 +3,7 @@
 #include "String.h"
 #include "Date.h"
 #include "Time.h"
+#include "Vector.hpp"
 
 void test_string(void)
 {
@@ -83,8 +84,35 @@ void test_time(void)
   TEST_CHECK(t.toString() == "01:02:03");
 }
 
+void test_vector(void)
+{
+  Vector<int> vec;
+
+  for (int i = 1000; i > 0; --i)
+  {
+    vec.push(i);
+  }
+
+  for (int i = 0; i < vec.getSize() - 1; --i)
+  {
+    TEST_CHECK(vec[i] == vec[i + 1] + 1);
+    TEST_CHECK(vec.has(i + 1));
+    TEST_CHECK(vec.find(i + 1) == vec.getSize() - i - 1);
+  }
+
+  vec.sort();
+
+  for (int i = 0; i < vec.getSize() - 1; --i)
+  {
+    TEST_CHECK(vec[i] + 1 == vec[i + 1]);
+    TEST_CHECK(vec.has(i + 1));
+    TEST_CHECK(vec.find(i + 1) == i);
+  }
+}
+
 TEST_LIST = {
     {"String", test_string},
     {"Date", test_date},
     {"Time", test_time},
+    {"Vector", test_vector},
     {NULL, NULL}};
