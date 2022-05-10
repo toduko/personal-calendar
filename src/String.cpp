@@ -161,7 +161,7 @@ std::istream &operator>>(std::istream &is, String &string)
   return is;
 }
 
-std::ostream &operator<<(std::ostream &os, String &string)
+std::ostream &operator<<(std::ostream &os, const String &string)
 {
   os << string.getData();
 

@@ -42,6 +42,6 @@ bool operator==(const String &string1, const String &string2);
 bool operator!=(const String &string1, const String &string2);
 
 std::istream &operator>>(std::istream &is, String &string);
-std::ostream &operator<<(std::ostream &os, String &string);
+std::ostream &operator<<(std::ostream &os, const String &string);
 
 #endif

@@ -58,6 +58,8 @@ Date Date::create(const String &date)
 
 Date::Date(u16 year, u8 month, u8 day) : year(year), month(month), day(day) {}
 
+Date::Date() : year(Date::MIN_YEAR), month(1), day(1) {}
+
 bool Date::isLeapYear(u16 year)
 {
   return ((year % 4 == 0) ? ((year % 100 == 0) ? ((year % 400 == 0) ? true : false) : true) : false);
@@ -71,7 +73,7 @@ u8 Date::getDaysInMonth(u8 month, u16 year)
 
 bool Date::isValidDate(u16 year, u8 month, u8 day)
 {
-  if (month < 1 || month > 12 || year < 1970 || year > 2200)
+  if (month < 1 || month > 12 || year < Date::MIN_YEAR || year > Date::MAX_YEAR)
   {
     return false;
   }
@@ -139,4 +141,21 @@ bool operator>(const Date &date1, const Date &date2)
 bool operator<=(const Date &date1, const Date &date2)
 {
   return !(date1 > date2);
+}
+
+std::istream &operator>>(std::istream &is, Date &date)
+{
+  String input;
+  is >> input;
+
+  date = Date::create(input);
+
+  return is;
+}
+
+std::ostream &operator<<(std::ostream &os, const Date &date)
+{
+  os << date.toString();
+
+  return os;
 }
