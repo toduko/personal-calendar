@@ -2,9 +2,7 @@
 #define DATE_H_
 
 #include "String.h"
-
-typedef unsigned char u8;
-typedef unsigned short u16;
+#include "typedefs.h"
 
 class Date
 {

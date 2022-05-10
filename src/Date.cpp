@@ -53,7 +53,7 @@ Date Date::create(const String &date)
     (day *= 10) += String::toDigit(date[i]);
   }
 
-  return Date(year, month, day);
+  return Date::create(year, month, day);
 }
 
 Date::Date(u16 year, u8 month, u8 day) : year(year), month(month), day(day) {}
