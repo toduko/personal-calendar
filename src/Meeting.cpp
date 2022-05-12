@@ -1,5 +1,7 @@
 #include "Meeting.h"
 
+Meeting::Meeting() {}
+
 Meeting::Meeting(const String &name, const String &comment, const Date &date, const Time &start, const Time &end)
     : name(name), comment(comment), date(date), start(start), end(end) {}
 
@@ -16,6 +18,31 @@ Meeting Meeting::create(const String &name, const String &comment, const Date &d
 bool Meeting::isValidMeeting(const String &name, const String &comment, const Date &date, const Time &start, const Time &end)
 {
   return !name.isEmpty() && !comment.isEmpty() && start < end;
+}
+
+void Meeting::setName(const String &name)
+{
+  this->name = name;
+}
+
+void Meeting::setComment(const String &comment)
+{
+  this->comment = comment;
+}
+
+void Meeting::setDate(const Date &date)
+{
+  this->date = date;
+}
+
+void Meeting::setStart(const Time &start)
+{
+  this->start = start;
+}
+
+void Meeting::setEnd(const Time &end)
+{
+  this->end = end;
 }
 
 const String &Meeting::getName() const
@@ -41,6 +68,38 @@ const Time &Meeting::getStart() const
 const Time &Meeting::getEnd() const
 {
   return this->end;
+}
+
+bool Meeting::meetsCriteria(const MeetingCriteria &criteria, const Meeting &meeting)
+{
+  if (criteria.name && this->name != meeting.name ||
+      criteria.comment && this->comment != meeting.comment ||
+      criteria.date && this->date != meeting.date ||
+      criteria.start && this->start != meeting.start ||
+      criteria.end && this->end != meeting.end)
+  {
+    return false;
+  }
+
+  return true;
+}
+
+void Meeting::writeToFile(std::ofstream &file)
+{
+  this->name.writeToFile(file);
+  this->comment.writeToFile(file);
+  this->date.writeToFile(file);
+  this->start.writeToFile(file);
+  this->end.writeToFile(file);
+}
+
+void Meeting::readFromFile(std::ifstream &file)
+{
+  this->name.readFromFile(file);
+  this->comment.readFromFile(file);
+  this->date.readFromFile(file);
+  this->start.readFromFile(file);
+  this->end.readFromFile(file);
 }
 
 bool operator<(const Meeting &meeting1, const Meeting &meeting2)

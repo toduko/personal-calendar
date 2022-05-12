@@ -57,6 +57,31 @@ char String::operator[](size_t index) const
   return this->data[index];
 }
 
+String::operator char *() const
+{
+  return this->data;
+}
+
+void String::writeToFile(std::ofstream &file)
+{
+
+  file.write((const char *)&this->length, sizeof(this->length));
+  file.write((const char *)this->data, this->length);
+}
+
+void String::readFromFile(std::ifstream &file)
+{
+  size_t newLength = 0;
+  this->free();
+
+  file.read((char *)&newLength, sizeof(this->length));
+  char *newData = new char[newLength];
+  file.read(newData, newLength);
+
+  this->copy(newData);
+  delete[] newData;
+}
+
 String::~String()
 {
   this->free();

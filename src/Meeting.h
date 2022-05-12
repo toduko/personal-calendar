@@ -5,6 +5,17 @@
 #include "Date.h"
 #include "Time.h"
 
+#include <fstream>
+
+struct MeetingCriteria
+{
+  bool name;
+  bool comment;
+  bool date;
+  bool start;
+  bool end;
+};
+
 class Meeting
 {
 private:
@@ -16,6 +27,19 @@ private:
   Meeting(const String &name, const String &comment, const Date &date, const Time &start, const Time &end);
 
 public:
+  Meeting();
+
+  void setName(const String &name);
+  void setComment(const String &comment);
+  void setDate(const Date &date);
+  void setStart(const Time &start);
+  void setEnd(const Time &end);
+
+  bool meetsCriteria(const MeetingCriteria &criteria, const Meeting &meeting);
+
+  void writeToFile(std::ofstream &file);
+  void readFromFile(std::ifstream &file);
+
   const String &getName() const;
   const String &getComment() const;
   const Date &getDate() const;

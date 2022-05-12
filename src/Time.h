@@ -16,10 +16,13 @@ private:
 
 public:
     Time();
-    
+
     u8 getHours() const;
     u8 getMinutes() const;
     u8 getSeconds() const;
+
+    void writeToFile(std::ofstream &file);
+    void readFromFile(std::ifstream &file);
 
     String toString() const;
 

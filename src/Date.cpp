@@ -102,13 +102,29 @@ u16 Date::getYear() const
 {
   return this->year;
 }
+
 u8 Date::getMonth() const
 {
   return this->month;
 }
+
 u8 Date::getDay() const
 {
   return this->day;
+}
+
+void Date::writeToFile(std::ofstream &file)
+{
+  file.write((const char *)&this->year, sizeof(this->year));
+  file.write((const char *)&this->month, sizeof(this->month));
+  file.write((const char *)&this->day, sizeof(this->day));
+}
+
+void Date::readFromFile(std::ifstream &file)
+{
+  file.read((char *)&this->year, sizeof(this->year));
+  file.read((char *)&this->month, sizeof(this->month));
+  file.read((char *)&this->day, sizeof(this->day));
 }
 
 bool operator==(const Date &date1, const Date &date2)

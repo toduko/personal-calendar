@@ -3,12 +3,13 @@
 
 #include <cstddef>
 #include <iostream>
+#include <fstream>
 
 class String
 {
 private:
-  char *data;
   size_t length;
+  char *data;
 
   void copy(const char *data);
   void move(String &&other);
@@ -26,6 +27,11 @@ public:
 
   char &operator[](size_t index);
   char operator[](size_t index) const;
+
+  operator char *() const;
+
+  void writeToFile(std::ofstream &file);
+  void readFromFile(std::ifstream &file);
 
   String &concat(const char *extra);
 

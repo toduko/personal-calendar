@@ -84,13 +84,29 @@ u8 Time::getHours() const
 {
   return this->hours;
 }
+
 u8 Time::getMinutes() const
 {
   return this->minutes;
 }
+
 u8 Time::getSeconds() const
 {
   return this->seconds;
+}
+
+void Time::writeToFile(std::ofstream &file)
+{
+  file.write((const char *)&this->hours, sizeof(this->hours));
+  file.write((const char *)&this->minutes, sizeof(this->minutes));
+  file.write((const char *)&this->seconds, sizeof(this->seconds));
+}
+
+void Time::readFromFile(std::ifstream &file)
+{
+  file.read((char *)&this->hours, sizeof(this->hours));
+  file.read((char *)&this->minutes, sizeof(this->minutes));
+  file.read((char *)&this->seconds, sizeof(this->seconds));
 }
 
 bool operator==(const Time &time1, const Time &time2)
