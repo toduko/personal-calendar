@@ -94,6 +94,11 @@ void String::free()
 
 void String::copy(const char *data)
 {
+  if (data == nullptr)
+  {
+    throw "Cannot copy nullptr to string";
+  }
+
   this->length = strlen(data);
   this->data = new char[this->length + 1];
   strcpy(this->data, data);
@@ -108,6 +113,11 @@ void String::move(String &&other)
 
 String &String::concat(const char *extra)
 {
+  if (extra == nullptr)
+  {
+    throw "Cannot copy nullptr to string";
+  }
+
   size_t newLength = this->length + strlen(extra);
   char *newData = new char[newLength + 1];
 
