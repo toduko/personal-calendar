@@ -60,6 +60,19 @@ Date::Date(u16 year, u8 month, u8 day) : year(year), month(month), day(day) {}
 
 Date::Date() : year(Date::MIN_YEAR), month(1), day(1) {}
 
+u8 Date::getWeekday(u16 year, u8 month, u8 day)
+{
+  // https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week#Disparate_variation
+  u8 t[] = {0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
+  year -= month < 3;
+  return ((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
+}
+
+u8 Date::getWeekday() const
+{
+  return Date::getWeekday(this->year, this->month, this->day);
+}
+
 bool Date::isLeapYear(u16 year)
 {
   return ((year % 4 == 0) ? ((year % 100 == 0) ? ((year % 400 == 0) ? true : false) : true) : false);

@@ -51,6 +51,8 @@ void test_date(void)
   Date d(Date::create("2002-11-16"));
   TEST_CHECK(d.getYear() == 2002 && d.getMonth() == 11 && d.getDay() == 16);
   TEST_CHECK(d.toString() == String("2002-11-16"));
+
+  TEST_CHECK(Date::create("2022-05-15").getWeekday() == 0);
 }
 
 void test_time(void)
