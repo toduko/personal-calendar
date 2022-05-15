@@ -22,6 +22,8 @@ public:
   void prettyPrint() const;
 
   void removeMeeting(const Date &date, const Time &start);
+  void changeMeeting(const Date &date, const Time &start, const Meeting &meeting);
+  int findMeeting(const Date &date, const Time &start) const;
 
   Vector<Meeting> getMeetingsByDate(const Date &date) const;
   Vector<Meeting> getMeetingsByNameOrComment(const String &name, const String &comment) const;

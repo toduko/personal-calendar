@@ -75,16 +75,47 @@ void MeetingManager::prettyPrint() const
 
 void MeetingManager::removeMeeting(const Date &date, const Time &start)
 {
+  int index = this->findMeeting(date, start);
+
+  if (index == -1)
+  {
+    throw "No such meeting found";
+  }
+
+  this->meetings.remove(index);
+}
+
+void MeetingManager::changeMeeting(const Date &date, const Time &start, const Meeting &meeting)
+{
+  int index = this->findMeeting(date, start);
+
+  if (index == -1)
+  {
+    throw "No such meeting found";
+  }
+
+  for (size_t i = 0; i < this->meetings.getSize(); ++i)
+  {
+    if (i != index && this->meetings[i].intersectsWith(meeting))
+    {
+      throw "Cannot add this meeting since it intersects with another one";
+    }
+  }
+
+  this->meetings[index] = meeting;
+}
+
+int MeetingManager::findMeeting(const Date &date, const Time &start) const
+{
   for (size_t i = 0; i < this->meetings.getSize(); ++i)
   {
     if (this->meetings[i].getDate() == date && this->meetings[i].getStart() == start)
     {
-      this->meetings.remove(i);
-      return;
+      return i;
     }
   }
 
-  throw "No such meeting found";
+  return -1;
 }
 
 Vector<Meeting> MeetingManager::getMeetingsByDate(const Date &date) const
