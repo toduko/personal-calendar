@@ -42,6 +42,12 @@ public:
     }
   }
 
+  Optional(Optional &&other)
+  {
+    data = other.data;
+    other.data = nullptr;
+  }
+
   Optional &operator=(const Optional &other)
   {
     if (this != &other)
@@ -54,6 +60,17 @@ public:
       {
         this->setData(other.getData());
       }
+    }
+
+    return *this;
+  }
+
+  Optional &operator=(Optional &&other)
+  {
+    if (this != &other)
+    {
+      data = other.data;
+      other.data = nullptr;
     }
 
     return *this;

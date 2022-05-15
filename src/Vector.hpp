@@ -31,9 +31,9 @@ private:
 
   void swap(Optional<T> &val1, Optional<T> &val2)
   {
-    Optional<T> temp = val1;
-    val1 = val2;
-    val2 = temp;
+    Optional<T> temp(std::move(val1));
+    val1 = std::move(val2);
+    val2 = std::move(temp);
   }
 
 public:
@@ -145,6 +145,19 @@ public:
     }
 
     return -1;
+  }
+
+  void remove(size_t index)
+  {
+    if (index >= this->size)
+    {
+      throw "Invalid index";
+    }
+    for (size_t i = index; i < this->size - 1; ++i)
+    {
+      this->values[i] = std::move(this->values[i + 1]);
+    }
+    --size;
   }
 
   bool has(const T &value)
