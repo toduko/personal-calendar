@@ -15,6 +15,39 @@ Meeting Meeting::create(const String &name, const String &comment, const Date &d
   return Meeting(name, comment, date, start, end);
 }
 
+Meeting Meeting::create(const String &meeting)
+{
+  if (!Meeting::isValidMeetingStringFormat(meeting)) // (String, String, Date, Time, Time)
+  {
+    throw "Invalid meeting string format";
+  }
+
+  Vector<String> props(meeting.removeFirst().removeLast().split(','));
+  return Meeting::create(props[0], props[1], Date::create(props[2]), Time::create(props[3]), Time::create(props[4]));
+}
+
+bool Meeting::isValidMeetingStringFormat(const String &meeting)
+{
+  return meeting.getLength() >= 34 && meeting[0] == '(' && meeting[meeting.getLength() - 1] == ')' && meeting.count(',') == 4;
+}
+
+void Meeting::prettyPrint() const
+{
+  std::cout << "Name: \"" << this->name << "\"\n";
+  std::cout << "Comment: \"" << this->comment << "\"\n";
+  std::cout << "Date: " << this->date << "\n";
+  std::cout << "Start Time: " << this->start << "\n";
+  std::cout << "End Time: " << this->end << "\n";
+}
+
+bool Meeting::intersectsWith(const Meeting &other) const
+{
+  Time maxStart = this->start > other.start ? this->start : other.start;
+  Time minEnd = this->end < other.end ? this->end : other.end;
+
+  return this->date == other.date && maxStart < minEnd;
+}
+
 bool Meeting::isValidMeeting(const String &name, const String &comment, const Date &date, const Time &start, const Time &end)
 {
   return !name.isEmpty() && !comment.isEmpty() && start < end;
@@ -70,41 +103,39 @@ const Time &Meeting::getEnd() const
   return this->end;
 }
 
-bool Meeting::meetsCriteria(const MeetingCriteria &criteria, const Meeting &meeting)
+bool Meeting::isNull() const
 {
-  if (criteria.nameIncludes && !this->name.includes(meeting.name) ||
-      criteria.commentIncludes && !this->comment.includes(meeting.comment) ||
-      criteria.date && this->date != meeting.date ||
-      criteria.start && this->start != meeting.start ||
-      criteria.end && this->end != meeting.end ||
-      criteria.isBetween && !(this->start >= meeting.start && this->end <= meeting.end))
-  {
-    return false;
-  }
-
-  return true;
-}
-
-void Meeting::writeToFile(std::ofstream &file)
-{
-  this->name.writeToFile(file);
-  this->comment.writeToFile(file);
-  this->date.writeToFile(file);
-  this->start.writeToFile(file);
-  this->end.writeToFile(file);
-}
-
-void Meeting::readFromFile(std::ifstream &file)
-{
-  this->name.readFromFile(file);
-  this->comment.readFromFile(file);
-  this->date.readFromFile(file);
-  this->start.readFromFile(file);
-  this->end.readFromFile(file);
+  return (this->name.getLength() + this->comment.getLength()) == 0;
 }
 
 bool operator<(const Meeting &meeting1, const Meeting &meeting2)
 {
   return meeting1.getDate() < meeting2.getDate() ||
          meeting1.getDate() == meeting2.getDate() && meeting1.getStart() < meeting2.getStart();
+}
+
+std::ostream &operator<<(std::ostream &os, const Meeting &meeting)
+{
+  os << '('
+     << meeting.getName() << ","
+     << meeting.getComment() << ","
+     << meeting.getDate() << ","
+     << meeting.getStart() << ","
+     << meeting.getEnd()
+     << ')';
+
+  return os;
+}
+
+std::istream &operator>>(std::istream &is, Meeting &meeting)
+{
+  String input;
+  is >> input;
+
+  if (input != String(""))
+  {
+    meeting = Meeting::create(input);
+  }
+
+  return is;
 }

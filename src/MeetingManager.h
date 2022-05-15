@@ -8,6 +8,7 @@
 class MeetingManager
 {
 private:
+  static const String FILE_EXTENSION;
   Vector<Meeting> meetings;
   String databaseName;
 
@@ -18,9 +19,14 @@ public:
 
   void save() const;
 
-  int findMeetingBy(const MeetingCriteria &criteria, const Meeting &meeting) const;
+  void prettyPrint() const;
 
-  void changeMeeting(const MeetingCriteria &criteria, const Meeting &meeting);
+  void removeMeeting(const Date &date, const Time &start);
+
+  Vector<Meeting> getMeetingsByDate(const Date &date) const;
+  Vector<Meeting> getMeetingsByNameOrComment(const String &name, const String &comment) const;
+
+  void writeWeekdayStaticsticsToFile(const Date &start, const Date &end) const;
 
   void addMeeting(const Meeting &meeting);
 };

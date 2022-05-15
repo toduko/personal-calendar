@@ -5,17 +5,8 @@
 #include "Date.h"
 #include "Time.h"
 
+#include <iostream>
 #include <fstream>
-
-struct MeetingCriteria
-{
-  bool nameIncludes = false;
-  bool commentIncludes = false;
-  bool date = false;
-  bool start = false;
-  bool end = false;
-  bool isBetween = false;
-};
 
 class Meeting
 {
@@ -36,10 +27,9 @@ public:
   void setStart(const Time &start);
   void setEnd(const Time &end);
 
-  bool meetsCriteria(const MeetingCriteria &criteria, const Meeting &meeting);
+  bool intersectsWith(const Meeting &other) const;
 
-  void writeToFile(std::ofstream &file);
-  void readFromFile(std::ifstream &file);
+  void prettyPrint() const;
 
   const String &getName() const;
   const String &getComment() const;
@@ -47,10 +37,17 @@ public:
   const Time &getStart() const;
   const Time &getEnd() const;
 
+  bool isNull() const;
+
+  static Meeting create(const String &meeting);
   static Meeting create(const String &name, const String &comment, const Date &date, const Time &start, const Time &end);
   static bool isValidMeeting(const String &name, const String &comment, const Date &date, const Time &start, const Time &end);
+  static bool isValidMeetingStringFormat(const String &meeting);
 };
 
 bool operator<(const Meeting &meeting1, const Meeting &meeting2);
+
+std::istream &operator>>(std::istream &is, Meeting &meeting);
+std::ostream &operator<<(std::ostream &os, const Meeting &meeting);
 
 #endif

@@ -2,6 +2,8 @@
 
 #include <fstream>
 
+const String MeetingManager::FILE_EXTENSION(".db");
+
 MeetingManager::MeetingManager(const String &databaseName) : databaseName(databaseName)
 {
   this->init();
@@ -9,7 +11,7 @@ MeetingManager::MeetingManager(const String &databaseName) : databaseName(databa
 
 void MeetingManager::init()
 {
-  std::ifstream file(this->databaseName, std::ios::app | std::ios::binary);
+  std::ifstream file(this->databaseName + MeetingManager::FILE_EXTENSION, std::ios::app | std::ios::binary);
 
   if (!file.is_open())
   {
@@ -20,11 +22,13 @@ void MeetingManager::init()
 
   while (!file.eof())
   {
-
     Meeting meeting;
-    meeting.readFromFile(file);
+    file >> meeting;
 
-    this->meetings.push(meeting);
+    if (!meeting.isNull())
+    {
+      this->meetings.push(meeting);
+    }
   }
 
   file.close();
@@ -32,7 +36,7 @@ void MeetingManager::init()
 
 void MeetingManager::save() const
 {
-  std::ofstream file(this->databaseName, std::ios::binary);
+  std::ofstream file(this->databaseName + MeetingManager::FILE_EXTENSION, std::ios::binary | std::ios::trunc);
 
   if (!file.is_open())
   {
@@ -43,7 +47,7 @@ void MeetingManager::save() const
 
   for (size_t i = 0; i < this->meetings.getSize(); ++i)
   {
-    this->meetings[i].writeToFile(file);
+    file << this->meetings[i] << '\n';
   }
 
   file.close();
@@ -51,38 +55,92 @@ void MeetingManager::save() const
 
 void MeetingManager::addMeeting(const Meeting &meeting)
 {
+  for (size_t i = 0; i < this->meetings.getSize(); ++i)
+  {
+    if (this->meetings[i].intersectsWith(meeting))
+    {
+      throw "Cannot add this meeting since it intersects with another one";
+    }
+  }
   this->meetings.push(meeting);
 }
 
-int MeetingManager::findMeetingBy(const MeetingCriteria &criteria, const Meeting &meeting) const
+void MeetingManager::prettyPrint() const
 {
   for (size_t i = 0; i < this->meetings.getSize(); ++i)
   {
-    if (this->meetings[i].meetsCriteria(criteria, meeting))
+    this->meetings[i].prettyPrint();
+  }
+}
+
+void MeetingManager::removeMeeting(const Date &date, const Time &start)
+{
+  for (size_t i = 0; i < this->meetings.getSize(); ++i)
+  {
+    if (this->meetings[i].getDate() == date && this->meetings[i].getStart() == start)
     {
-      return i;
+      this->meetings.remove(i);
+      return;
     }
   }
 
-  return -1;
+  throw "No such meeting found";
 }
 
-void MeetingManager::changeMeeting(const MeetingCriteria &criteria, const Meeting &meeting)
+Vector<Meeting> MeetingManager::getMeetingsByDate(const Date &date) const
 {
-  int index = this->findMeetingBy(criteria, meeting);
+  Vector<Meeting> results;
 
-  if (index == -1)
+  for (size_t i = 0; i < this->meetings.getSize(); ++i)
   {
-    throw "No such meeting found";
+    if (this->meetings[i].getDate() == date)
+    {
+      results.push(this->meetings[i]);
+    }
   }
 
-  if (criteria.date)
+  return results;
+}
+
+Vector<Meeting> MeetingManager::getMeetingsByNameOrComment(const String &name, const String &comment) const
+{
+  Vector<Meeting> results;
+
+  for (size_t i = 0; i < this->meetings.getSize(); ++i)
   {
-    this->meetings[index].setDate(meeting.getDate());
+    if (this->meetings[i].getName().includes(name) || this->meetings[i].getComment().includes(comment))
+    {
+      results.push(this->meetings[i]);
+    }
   }
 
-  if (criteria.start)
+  return results;
+}
+
+void MeetingManager::writeWeekdayStaticsticsToFile(const Date &start, const Date &end) const
+{
+  const char *WEEKDAY_STRINGS[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+  size_t weekdayStats[7] = {0};
+
+  for (size_t i = 0; i < this->meetings.getSize(); ++i)
   {
-    this->meetings[index].setStart(meeting.getStart());
+    if (this->meetings[i].getDate() >= start && this->meetings[i].getDate() <= end)
+    {
+      ++weekdayStats[this->meetings[i].getDate().getWeekday()];
+    }
   }
+
+  std::ofstream statsFile("stats-" + start.toString() + ".txt");
+
+  if (!statsFile.is_open())
+  {
+    throw "Couldn't open statistics file";
+  }
+
+  for (u8 i = 0; i < 7; ++i)
+  {
+    statsFile << WEEKDAY_STRINGS[i] << " : " << weekdayStats[i] << '\n';
+  }
+
+  statsFile.close();
 }

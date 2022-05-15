@@ -126,20 +126,6 @@ u8 Date::getDay() const
   return this->day;
 }
 
-void Date::writeToFile(std::ofstream &file)
-{
-  file.write((const char *)&this->year, sizeof(this->year));
-  file.write((const char *)&this->month, sizeof(this->month));
-  file.write((const char *)&this->day, sizeof(this->day));
-}
-
-void Date::readFromFile(std::ifstream &file)
-{
-  file.read((char *)&this->year, sizeof(this->year));
-  file.read((char *)&this->month, sizeof(this->month));
-  file.read((char *)&this->day, sizeof(this->day));
-}
-
 bool operator==(const Date &date1, const Date &date2)
 {
   return date1.getDay() == date2.getDay() && date1.getMonth() == date2.getMonth() && date1.getYear() == date2.getYear();

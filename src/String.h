@@ -1,6 +1,8 @@
 #ifndef STRING_H_
 #define STRING_H_
 
+#include "Vector.hpp"
+
 #include <cstddef>
 #include <iostream>
 #include <fstream>
@@ -16,12 +18,19 @@ private:
   void free();
 
 public:
+  String(char character);
   String(const char *data = "");
   String(const String &other);
   String(String &&other);
   String &operator=(const String &other);
   String &operator=(String &&other);
   ~String();
+
+  String removeFirst() const;
+  String removeLast() const;
+
+  Vector<String> split(char splitSymbol) const;
+  size_t count(char symbol) const;
 
   bool isEmpty() const;
 
@@ -31,10 +40,6 @@ public:
   char operator[](size_t index) const;
 
   operator char *() const;
-
-  void writeToFile(std::ofstream &file);
-  void readFromFile(std::ifstream &file);
-
   String &concat(const char *extra);
 
   const char *getData() const;

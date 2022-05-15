@@ -8,6 +8,12 @@ String::String(const char *data)
   this->copy(data);
 }
 
+String::String(char character)
+{
+  char data[2] = {character, 0};
+  this->copy(data);
+}
+
 String::String(const String &other)
 {
   this->copy(other.data);
@@ -60,26 +66,6 @@ char String::operator[](size_t index) const
 String::operator char *() const
 {
   return this->data;
-}
-
-void String::writeToFile(std::ofstream &file)
-{
-
-  file.write((const char *)&this->length, sizeof(this->length));
-  file.write((const char *)this->data, this->length);
-}
-
-void String::readFromFile(std::ifstream &file)
-{
-  size_t newLength = 0;
-  this->free();
-
-  file.read((char *)&newLength, sizeof(this->length));
-  char *newData = new char[newLength];
-  file.read(newData, newLength);
-
-  this->copy(newData);
-  delete[] newData;
 }
 
 String::~String()
@@ -151,6 +137,32 @@ bool String::includes(const String &substring) const
   return strstr(this->data, substring.data) != nullptr;
 }
 
+String String::removeFirst() const
+{
+  if (this->length == 0)
+  {
+    throw "No elements to remove";
+  }
+  return String(this->data + 1);
+}
+
+String String::removeLast() const
+{
+  if (this->length == 0)
+  {
+    throw "No elements to remove";
+  }
+
+  char *newData = new char[this->length];
+  strncpy(newData, this->data, this->length);
+  newData[this->length - 1] = 0;
+
+  String result(newData);
+  delete[] newData;
+
+  return result;
+}
+
 String &String::operator+=(const String &other)
 {
   return this->concat(other.data);
@@ -171,6 +183,47 @@ bool operator==(const String &string1, const String &string2)
 bool operator!=(const String &string1, const String &string2)
 {
   return !(string1 == string2);
+}
+
+Vector<String> String::split(char splitSymbol) const
+{
+  Vector<String> result;
+  String s("");
+  bool hasUnpushedData = false;
+
+  for (size_t i = 0; i < this->length; ++i)
+  {
+    if (this->data[i] == splitSymbol)
+    {
+      result.push(s);
+      s = String("");
+      hasUnpushedData = false;
+    }
+    else
+    {
+      s += this->data[i];
+      hasUnpushedData = true;
+    }
+  }
+
+  if (hasUnpushedData)
+  {
+    result.push(s);
+  }
+
+  return result;
+}
+
+size_t String::count(char symbol) const
+{
+  size_t count = 0;
+
+  for (size_t i = 0; i < this->length; ++i)
+  {
+    count += this->data[i] == symbol;
+  }
+
+  return count;
 }
 
 bool String::isDigit(char c)

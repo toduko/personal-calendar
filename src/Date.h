@@ -27,9 +27,6 @@ public:
 
   String toString() const;
 
-  void writeToFile(std::ofstream &file);
-  void readFromFile(std::ifstream &file);
-
   static u8 getWeekday(u16 year, u8 month, u8 day);
   static Date create(u16 year, u8 month, u8 day);
   static Date create(const String &date);
