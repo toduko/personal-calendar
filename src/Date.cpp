@@ -73,6 +73,35 @@ u8 Date::getWeekday() const
   return Date::getWeekday(this->year, this->month, this->day);
 }
 
+Date Date::getNextDay() const
+{
+  Date result(*this);
+
+  if (++result.day > Date::getDaysInMonth(result.day, result.year))
+  {
+    result.day = 1;
+    if (++result.month > 12)
+    {
+      result.month = 1;
+      ++result.year;
+    }
+  }
+
+  return result;
+}
+
+Date Date::getNextWeek() const
+{
+  Date result(*this);
+
+  for (u8 i = 0; i < 7; ++i)
+  {
+    result = result.getNextDay();
+  }
+
+  return result;
+}
+
 bool Date::isLeapYear(u16 year)
 {
   return ((year % 4 == 0) ? ((year % 100 == 0) ? ((year % 400 == 0) ? true : false) : true) : false);

@@ -25,6 +25,9 @@ public:
 
   u8 getWeekday() const;
 
+  Date getNextDay() const;
+  Date getNextWeek() const;
+
   String toString() const;
 
   static u8 getWeekday(u16 year, u8 month, u8 day);
