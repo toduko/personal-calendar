@@ -90,6 +90,16 @@ Date Date::getNextDay() const
   return result;
 }
 
+void Date::passDay()
+{
+  *this = this->getNextDay();
+}
+
+void Date::passWeek()
+{
+  *this = this->getNextWeek();
+}
+
 Date Date::getNextWeek() const
 {
   Date result(*this);

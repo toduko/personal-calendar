@@ -23,6 +23,9 @@ public:
   u8 getMonth() const;
   u8 getDay() const;
 
+  void passDay();
+  void passWeek();
+
   u8 getWeekday() const;
 
   Date getNextDay() const;

@@ -3,6 +3,8 @@
 #include <fstream>
 
 const String MeetingManager::FILE_EXTENSION(".db");
+const Time MeetingManager::WORKDAY_START(Time::create("08:00:00"));
+const Time MeetingManager::WORKDAY_END(Time::create("17:00:00"));
 
 MeetingManager::MeetingManager(const String &databaseName) : databaseName(databaseName)
 {
@@ -116,6 +118,39 @@ int MeetingManager::findMeeting(const Date &date, const Time &start) const
   }
 
   return -1;
+}
+
+Vector<Pair<Date, Pair<Time, Time>>> MeetingManager::getFreeTime(const Date &startDate, const Time &duration) const
+{
+  Vector<Pair<Date, Pair<Time, Time>>> results;
+  int i = 0;
+  for (Date d = startDate; d < startDate.getNextWeek(); d.passDay())
+  {
+    Vector<Meeting> meetingsDuringDate = this->getMeetingsByDate(d);
+    for (Time t = MeetingManager::WORKDAY_START; t < MeetingManager::WORKDAY_END && (t + duration) < MeetingManager::WORKDAY_END; t.passFifteenMinutes())
+    {
+      Meeting m;
+      m.setStart(t);
+      m.setEnd(t + duration);
+
+      if (meetingsDuringDate.getSize() == 0)
+      {
+        results.push(Pair<Date, Pair<Time, Time>>(d, Pair<Time, Time>(t, t + duration)));
+      }
+      else
+      {
+        for (size_t i = 0; i < meetingsDuringDate.getSize(); ++i)
+        {
+          if (!meetingsDuringDate[i].intersectsWith(m))
+          {
+            results.push(Pair<Date, Pair<Time, Time>>(d, Pair<Time, Time>(t, t + duration)));
+          }
+        }
+      }
+    }
+  }
+
+  return results;
 }
 
 Vector<Meeting> MeetingManager::getMeetingsByDate(const Date &date) const

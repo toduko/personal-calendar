@@ -95,6 +95,34 @@ u8 Time::getSeconds() const
   return this->seconds;
 }
 
+void Time::passFifteenMinutes()
+{
+  *this = *this + Time::create(0, 15, 0);
+}
+
+Time operator+(const Time &time1, const Time &time2)
+{
+  u8 hours = 0, minutes = 0, seconds = 0;
+
+  seconds += time1.getSeconds() + time2.getSeconds();
+  if (seconds >= 60)
+  {
+    seconds %= 60;
+    ++minutes;
+  }
+
+  minutes += time1.getMinutes() + time2.getMinutes();
+  if (minutes >= 60)
+  {
+    minutes %= 60;
+    ++hours;
+  }
+
+  (hours += time1.getHours() + time2.getHours()) %= 24;
+
+  return Time::create(hours, minutes, seconds);
+}
+
 bool operator==(const Time &time1, const Time &time2)
 {
   return time1.getHours() == time2.getHours() &&

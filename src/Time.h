@@ -23,11 +23,15 @@ public:
 
     String toString() const;
 
+    void passFifteenMinutes();
+
     static Time create(u8 hours, u8 minutes, u8 seconds);
     static Time create(const String &time);
     static bool isValidTime(u8 hours, u8 minutes, u8 seconds);
     static bool isValidTimeStringFormat(const String &time);
 };
+
+Time operator+(const Time &time1, const Time &time2);
 
 bool operator==(const Time &time1, const Time &time2);
 bool operator!=(const Time &time1, const Time &time2);
