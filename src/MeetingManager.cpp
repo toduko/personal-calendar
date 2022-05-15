@@ -76,16 +76,6 @@ void MeetingManager::changeMeeting(const MeetingCriteria &criteria, const Meetin
     throw "No such meeting found";
   }
 
-  if (criteria.name)
-  {
-    this->meetings[index].setName(meeting.getName());
-  }
-
-  if (criteria.comment)
-  {
-    this->meetings[index].setComment(meeting.getComment());
-  }
-
   if (criteria.date)
   {
     this->meetings[index].setDate(meeting.getDate());
@@ -94,10 +84,5 @@ void MeetingManager::changeMeeting(const MeetingCriteria &criteria, const Meetin
   if (criteria.start)
   {
     this->meetings[index].setStart(meeting.getStart());
-  }
-
-  if (criteria.end)
-  {
-    this->meetings[index].setEnd(meeting.getEnd());
   }
 }

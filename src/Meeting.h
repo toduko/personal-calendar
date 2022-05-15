@@ -9,11 +9,12 @@
 
 struct MeetingCriteria
 {
-  bool name;
-  bool comment;
-  bool date;
-  bool start;
-  bool end;
+  bool nameIncludes = false;
+  bool commentIncludes = false;
+  bool date = false;
+  bool start = false;
+  bool end = false;
+  bool isBetween = false;
 };
 
 class Meeting

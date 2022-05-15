@@ -72,11 +72,12 @@ const Time &Meeting::getEnd() const
 
 bool Meeting::meetsCriteria(const MeetingCriteria &criteria, const Meeting &meeting)
 {
-  if (criteria.name && this->name != meeting.name ||
-      criteria.comment && this->comment != meeting.comment ||
+  if (criteria.nameIncludes && !this->name.includes(meeting.name) ||
+      criteria.commentIncludes && !this->comment.includes(meeting.comment) ||
       criteria.date && this->date != meeting.date ||
       criteria.start && this->start != meeting.start ||
-      criteria.end && this->end != meeting.end)
+      criteria.end && this->end != meeting.end ||
+      criteria.isBetween && !(this->start >= meeting.start && this->end <= meeting.end))
   {
     return false;
   }

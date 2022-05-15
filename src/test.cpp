@@ -14,8 +14,8 @@ void test_string(void)
   TEST_CHECK((s1 + copy) != s1);
   TEST_CHECK((s1 + copy).getLength() == s1.getLength() + copy.getLength());
 
-  const char *ALPHABET = "abcdefghijklmnopqrstuvwxyz";
-  const size_t ALPHABET_LENGTH = strlen(ALPHABET);
+  String ALPHABET("abcdefghijklmnopqrstuvwxyz");
+  const size_t ALPHABET_LENGTH = ALPHABET.getLength();
 
   s1 = "";
   s1 += ALPHABET;
@@ -50,7 +50,7 @@ void test_date(void)
 
   Date d(Date::create("2002-11-16"));
   TEST_CHECK(d.getYear() == 2002 && d.getMonth() == 11 && d.getDay() == 16);
-  TEST_CHECK(d.toString() == "2002-11-16");
+  TEST_CHECK(d.toString() == String("2002-11-16"));
 }
 
 void test_time(void)
@@ -81,7 +81,7 @@ void test_time(void)
 
   Time t(Time::create("01:02:03"));
   TEST_CHECK(t.getHours() == 1 && t.getMinutes() == 2 && t.getSeconds() == 3);
-  TEST_CHECK(t.toString() == "01:02:03");
+  TEST_CHECK(t.toString() == String("01:02:03"));
 }
 
 void test_vector(void)

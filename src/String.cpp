@@ -146,6 +146,11 @@ bool String::isEmpty() const
   return this->length == 0;
 }
 
+bool String::includes(const String &substring) const
+{
+  return strstr(this->data, substring.data) != nullptr;
+}
+
 String &String::operator+=(const String &other)
 {
   return this->concat(other.data);
