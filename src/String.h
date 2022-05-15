@@ -26,6 +26,9 @@ public:
   String &operator=(String &&other);
   ~String();
 
+  String toLowercase() const;
+  String toUppercase() const;
+
   String removeFirst() const;
   String removeLast() const;
 

@@ -137,6 +137,36 @@ bool String::includes(const String &substring) const
   return strstr(this->data, substring.data) != nullptr;
 }
 
+String String::toLowercase() const
+{
+  String result(*this);
+
+  for (size_t i = 0; i < result.length; ++i)
+  {
+    if (result[i] >= 'A' && result[i] <= 'Z')
+    {
+      result[i] |= 32;
+    }
+  }
+
+  return result;
+}
+
+String String::toUppercase() const
+{
+  String result(*this);
+
+  for (size_t i = 0; i < result.length; ++i)
+  {
+    if (result[i] >= 'a' && result[i] <= 'z')
+    {
+      result[i] &= ~32;
+    }
+  }
+
+  return result;
+}
+
 String String::removeFirst() const
 {
   if (this->length == 0)

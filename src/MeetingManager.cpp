@@ -3,17 +3,18 @@
 #include <fstream>
 
 const String MeetingManager::FILE_EXTENSION(".db");
+const String MeetingManager::DATABASE_NAME("meetings");
 const Time MeetingManager::WORKDAY_START(Time::create("08:00:00"));
 const Time MeetingManager::WORKDAY_END(Time::create("17:00:00"));
 
-MeetingManager::MeetingManager(const String &databaseName) : databaseName(databaseName)
+MeetingManager::MeetingManager() 
 {
   this->init();
 }
 
 void MeetingManager::init()
 {
-  std::ifstream file(this->databaseName + MeetingManager::FILE_EXTENSION, std::ios::app | std::ios::binary);
+  std::ifstream file(MeetingManager::DATABASE_NAME + MeetingManager::FILE_EXTENSION, std::ios::app | std::ios::binary);
 
   if (!file.is_open())
   {
@@ -38,7 +39,7 @@ void MeetingManager::init()
 
 void MeetingManager::save() const
 {
-  std::ofstream file(this->databaseName + MeetingManager::FILE_EXTENSION, std::ios::binary | std::ios::trunc);
+  std::ofstream file(MeetingManager::DATABASE_NAME + MeetingManager::FILE_EXTENSION, std::ios::binary | std::ios::trunc);
 
   if (!file.is_open())
   {
@@ -120,7 +121,7 @@ int MeetingManager::findMeeting(const Date &date, const Time &start) const
   return -1;
 }
 
-Vector<Pair<Date, Pair<Time, Time>>> MeetingManager::getFreeTime(const Date &startDate, const Time &duration) const
+Vector<Pair<Date, Pair<Time, Time>>> MeetingManager::getFreeMeetingWindows(const Date &startDate, const Time &duration) const
 {
   Vector<Pair<Date, Pair<Time, Time>>> results;
   int i = 0;
@@ -168,13 +169,13 @@ Vector<Meeting> MeetingManager::getMeetingsByDate(const Date &date) const
   return results;
 }
 
-Vector<Meeting> MeetingManager::getMeetingsByNameOrComment(const String &name, const String &comment) const
+Vector<Meeting> MeetingManager::getMeetingsByNameOrComment(const String &search) const
 {
   Vector<Meeting> results;
 
   for (size_t i = 0; i < this->meetings.getSize(); ++i)
   {
-    if (this->meetings[i].getName().includes(name) || this->meetings[i].getComment().includes(comment))
+    if (this->meetings[i].getName().includes(search) || this->meetings[i].getComment().includes(search))
     {
       results.push(this->meetings[i]);
     }

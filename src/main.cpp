@@ -4,16 +4,21 @@
 #include "Date.h"
 #include "Time.h"
 #include "Meeting.h"
+#include "CLI.h"
 
 int main()
 {
-  try
+  CLI cli;
+  while (cli.shouldContinue())
   {
-    std::cout << "Personal calendar\n";
-  }
-  catch (const char *msg)
-  {
-    std::cout << msg << std::endl;
+    try
+    {
+      cli.enter();
+    }
+    catch (const char *msg)
+    {
+      std::cout << msg << std::endl;
+    }
   }
 
   return 0;
